@@ -114,14 +114,15 @@ contract NeoPodNFT is
      */
     function initialize(
         string memory initialName,
-        string memory initialSymbol
+        string memory initialSymbol,
+        address _owner
     ) external {
         require(!initialized, "Contract is already initialized");
 
         ERC721Initializable.initializeERC721(initialName, initialSymbol);
-        OwnableInitializable.initializeOwnable(msg.sender);
-        isAdmin[msg.sender] = true;
-        emit AdminAdded(msg.sender);
+        OwnableInitializable.initializeOwnable(_owner);
+        isAdmin[_owner] = true;
+        emit AdminAdded(_owner);
 
         initialized = true;
     }

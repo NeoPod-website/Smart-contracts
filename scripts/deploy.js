@@ -11,7 +11,7 @@ async function main() {
 
   console.log("Deploying contracts with the account:", deployer.address);
 
-  const contract = await hre.ethers.deployContract("ProxyFactory", [], {
+  const contract = await hre.ethers.deployContract("NeoPodNFT", [], {
     maxPriorityFeePerGas: 25000000000,
     maxFeePerGas: 50000000000,
     gasLimit: 5000000,

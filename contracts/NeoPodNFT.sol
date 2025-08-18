@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "./base/ERC721Initializable.sol";
+import "./base/OwnableInitializable.sol";
+import "./common/StorageAccessible.sol";
+import "./common/Singleton.sol";
 
 /**
  * @title NeoPodNFT
@@ -12,9 +14,17 @@ import "@openzeppelin/contracts/utils/Strings.sol";
  * It includes role-based access for admins and minters and allows for a unique
  * metadata URI for each NFT type.
  */
-contract NeoPodNFT is ERC721, Ownable {
+contract NeoPodNFT is
+    Singleton,
+    StorageAccessible,
+    ERC721Initializable,
+    OwnableInitializable
+{
     // Counter to keep track of the next token ID to be minted.
     uint256 private _tokenIdCounter;
+
+    // Flag to prevent re-initialization
+    bool private initialized;
 
     // Enum to define the four distinct types of NFTs.
     enum NFTType {
@@ -62,6 +72,11 @@ contract NeoPodNFT is ERC721, Ownable {
         NFTType mintedType
     );
     event TypeURIUpdated(NFTType indexed nftType, string newURI);
+    event SingletonUpdated(
+        address indexed oldSingleton,
+        address indexed newSingleton,
+        address indexed admin
+    );
 
     // --- Modifiers ---
     /**
@@ -83,14 +98,32 @@ contract NeoPodNFT is ERC721, Ownable {
         _;
     }
 
-    // --- Constructor ---
-    constructor(
+    constructor() {
+        /**
+         * By setting the initialized to true, it is not possible to call initialize anymore,
+         * This is an unusable contract, and it is only used to deploy the proxy contract
+         */
+        initialized = true;
+    }
+
+    /**
+     * @notice Initializes the contract.
+     * @dev Can only be called once.
+     * @param initialName The name of the token.
+     * @param initialSymbol The symbol of the token.
+     */
+    function initialize(
         string memory initialName,
         string memory initialSymbol
-    ) ERC721(initialName, initialSymbol) Ownable(msg.sender) {
-        // The contract deployer is automatically designated as the first admin.
+    ) external {
+        require(!initialized, "Contract is already initialized");
+
+        ERC721Initializable.initializeERC721(initialName, initialSymbol);
+        OwnableInitializable.initializeOwnable(msg.sender);
         isAdmin[msg.sender] = true;
         emit AdminAdded(msg.sender);
+
+        initialized = true;
     }
 
     // --- Role Management Functions ---
@@ -318,5 +351,44 @@ contract NeoPodNFT is ERC721, Ownable {
         delete tokenType[_tokenId];
 
         emit NFTBurned(_from, _tokenId, _nftType);
+    }
+
+    // --- Singleton Management ---
+
+    /**
+     * @notice Updates the singleton (implementation) address
+     * @dev Can only be called by an admin. This is a critical operation that changes the contract logic.
+     * @param _newSingleton The new singleton/implementation address
+     */
+    function updateSingleton(address _newSingleton) external onlyAdmin {
+        require(_newSingleton != address(0), "Invalid singleton address");
+        require(_newSingleton != getSingleton(), "Same singleton address");
+        require(_isContract(_newSingleton), "Singleton must be a contract");
+
+        address oldSingleton = getSingleton();
+        singleton = _newSingleton;
+
+        emit SingletonUpdated(oldSingleton, _newSingleton, msg.sender);
+    }
+
+    /**
+     * @notice Returns the current singleton address
+     * @return The address of the current singleton/implementation contract
+     */
+    function getSingleton() public view returns (address) {
+        return singleton;
+    }
+
+    /**
+     * @notice Checks if an address is a contract
+     * @param account The address to check
+     * @return True if the address contains contract code
+     */
+    function _isContract(address account) private view returns (bool) {
+        uint256 size;
+        assembly {
+            size := extcodesize(account)
+        }
+        return size > 0;
     }
 }

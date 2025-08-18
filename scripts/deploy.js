@@ -11,15 +11,11 @@ async function main() {
 
   console.log("Deploying contracts with the account:", deployer.address);
 
-  const contract = await hre.ethers.deployContract(
-    "NeoPodNFT",
-    ["NeoPodNFT", "NEOPOD"],
-    {
-      maxPriorityFeePerGas: 25000000000,
-      maxFeePerGas: 50000000000,
-      gasLimit: 5000000,
-    }
-  );
+  const contract = await hre.ethers.deployContract("ProxyFactory", [], {
+    maxPriorityFeePerGas: 25000000000,
+    maxFeePerGas: 50000000000,
+    gasLimit: 5000000,
+  });
 
   console.log("Contract address:", await contract.getAddress());
 }

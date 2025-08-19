@@ -9,6 +9,8 @@ import "./Proxy.sol";
  * @dev Enhanced version with better error handling, events, and public interface
  */
 contract ProxyFactory {
+    address public owner;
+
     // Events for transparency and indexing
     event ProxyDeployed(
         address indexed proxy,
@@ -24,6 +26,15 @@ contract ProxyFactory {
     error InvalidOwner();
     error InvalidSingleton();
 
+    constructor() {
+        owner = msg.sender;
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not the owner");
+        _;
+    }
+
     /**
      * @notice Deploys a new Proxy with specified parameters
      * @param singleton The implementation contract address
@@ -35,7 +46,7 @@ contract ProxyFactory {
         address singleton,
         bytes memory initializer,
         bytes32 salt
-    ) public returns (Proxy proxy) {
+    ) public onlyOwner returns (Proxy proxy) {
         // Input validation
         if (!isContract(singleton)) revert SingletonNotDeployed();
 
@@ -92,7 +103,7 @@ contract ProxyFactory {
         address singleton,
         bytes memory initializer,
         uint256 nonce
-    ) external returns (Proxy proxy) {
+    ) external onlyOwner returns (Proxy proxy) {
         bytes32 salt = keccak256(abi.encodePacked(msg.sender, nonce));
         return deployProxy(singleton, initializer, salt);
     }

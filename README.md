@@ -1,10 +1,9 @@
 # NeoPod NFT Contracts
 
-## Disclaimer
-
-**Confidential:** This repository and its contents are the proprietary property of the NeoPod team. The code is not open-source. This documentation is intended for internal informational purposes only. Do not distribute, copy, or share without explicit permission.
-
-----
+## Deployments
+- Master Copy: [0x5C23F19b8A4a826FBd3Fe9475863D23EF2763c9D](https://xt4scan.ngd.network/address/0x5C23F19b8A4a826FBd3Fe9475863D23EF2763c9D?tab=contact_code)
+- Proxy Factory: [0x07c26012e78E3343587a3d507a61A4EA3017782F](https://xt4scan.ngd.network/address/0x07c26012e78E3343587a3d507a61A4EA3017782F?tab=contact_code)
+- Deployed Proxy: [0x07FEbE2BA75a89808156af7053EF22D23019178F](https://xt4scan.ngd.network/address/0x07FEbE2BA75a89808156af7053EF22D23019178F?tab=contract)
 
 ## 1\. Overview
 

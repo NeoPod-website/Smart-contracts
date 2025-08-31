@@ -1,9 +1,9 @@
 # NeoPod NFT Contracts
 
 ## Deployments
-- Master Copy: [0x5C23F19b8A4a826FBd3Fe9475863D23EF2763c9D](https://xt4scan.ngd.network/address/0x5C23F19b8A4a826FBd3Fe9475863D23EF2763c9D?tab=contact_code)
-- Proxy Factory: [0x07c26012e78E3343587a3d507a61A4EA3017782F](https://xt4scan.ngd.network/address/0x07c26012e78E3343587a3d507a61A4EA3017782F?tab=contact_code)
-- Deployed Proxy: [0x07FEbE2BA75a89808156af7053EF22D23019178F](https://xt4scan.ngd.network/address/0x07FEbE2BA75a89808156af7053EF22D23019178F?tab=contract)
+- Master Copy: [0x7046a7bCa69eD805032C1266fCc5D86AA18F8916](https://xexplorer.neo.org/address/0x7046a7bCa69eD805032C1266fCc5D86AA18F8916?tab=write_contract)
+- Proxy Factory: [0x05a525b938DcbF173AFA0205e925Bbc4b80841D5](https://xexplorer.neo.org/address/0x05a525b938DcbF173AFA0205e925Bbc4b80841D5?tab=write_contract)
+- Deployed Proxy: [0x89763Afa3f651BAA5043F0E88b2090B251157F49](https://xexplorer.neo.org/address/0x89763Afa3f651BAA5043F0E88b2090B251157F49?tab=write_proxy)
 
 ## 1\. Overview
 

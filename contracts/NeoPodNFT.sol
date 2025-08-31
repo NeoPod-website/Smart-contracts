@@ -193,7 +193,7 @@ contract NeoPodNFT is
 
     /**
      * @notice Returns the URI for a given token ID.
-     * @dev Constructs the URI by combining the type-specific base URI and the token ID.
+     * @dev Constructs the URI by combining the type-specific base URI.
      */
     function tokenURI(
         uint256 _tokenId
@@ -202,7 +202,7 @@ contract NeoPodNFT is
         NFTType nftType = tokenType[_tokenId];
         string memory baseURI = typeURIs[nftType];
         require(bytes(baseURI).length > 0, "URI not set for this NFT type");
-        return string(abi.encodePacked(baseURI, Strings.toString(_tokenId)));
+        return baseURI;
     }
 
     // --- Core NFT Management Functions ---
